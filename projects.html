@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشاريعي - AIForge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">⚡ AIForge</div>
+        <a href="{{ url_for('dashboard') }}" class="nav-back">← لوحة التحكم</a>
+    </nav>
+    <div class="container">
+        <h2>مشاريع التدريب</h2>
+        {% if projects %}
+        <div class="projects-grid">
+            {% for p in projects %}
+            <div class="project-card">
+                <h3>{{ p.name }}</h3>
+                <p>{{ p.model_type }} — {{ p.base_model }}</p>
+                <span class="badge badge-{{ p.status }}">{{ p.status }}</span>
+                {% if p.github_repo %}<a href="{{ p.github_repo }}" target="_blank">🐙 GitHub</a>{% endif %}
+                <form method="POST" action="{{ url_for('github.upload_project', project_id=p.id) }}">
+                    <input type="text" name="repo_name" placeholder="اسم المستودع">
+                    <button type="submit" class="btn-sm">رفع إلى GitHub</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>لا توجد مشاريع بعد. <a href="{{ url_for('training.training_page') }}">أنشئ مشروعك الأول</a></p>
+        {% endif %}
+    </div>
+</body>
+</html>

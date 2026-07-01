@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - AIForge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <h2>⚡ AIForge</h2>
+        <h3>إنشاء حساب جديد</h3>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+        <form method="POST">
+            <input type="text" name="username" placeholder="اسم المستخدم" required>
+            <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+            <input type="tel" name="phone" placeholder="رقم الهاتف (مثال: +966501234567)">
+            <input type="text" name="company" placeholder="اسم الشركة (اختياري)">
+            <input type="password" name="password" placeholder="كلمة المرور" required>
+            <button type="submit" class="btn-primary">إنشاء الحساب</button>
+        </form>
+        <p>لديك حساب؟ <a href="{{ url_for('auth.login') }}">سجل دخولك</a></p>
+    </div>
+</body>
+</html>

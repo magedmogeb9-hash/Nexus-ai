@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة - AIForge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">⚡ AIForge — إدارة</div>
+        <a href="{{ url_for('dashboard') }}" class="nav-back">← لوحة التحكم</a>
+    </nav>
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">👥 المستخدمون: {{ stats.total_users }}</div>
+            <div class="stat-card">📦 المشاريع: {{ stats.total_projects }}</div>
+            <div class="stat-card">💰 الإيرادات: ${{ stats.total_revenue }}</div>
+            <div class="stat-card">⭐ مشتركون: {{ stats.active_subs }}</div>
+        </div>
+        <h3>المستخدمون</h3>
+        <table class="admin-table">
+            <tr><th>الاسم</th><th>البريد</th><th>الخطة</th><th>موثق</th><th>إجراء</th></tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.subscription_plan }}</td>
+                <td>{{ '✅' if user.is_verified else '❌' }}</td>
+                <td>
+                    {% if not user.is_verified %}
+                    <a href="{{ url_for('admin.verify_user', user_id=user.id) }}" class="btn-sm">توثيق</a>
+                    {% endif %}
+                    <a href="{{ url_for('admin.delete_user', user_id=user.id) }}" class="btn-sm btn-danger"
+                       onclick="return confirm('حذف المستخدم؟')">حذف</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

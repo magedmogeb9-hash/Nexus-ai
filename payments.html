@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاشتراكات - AIForge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">⚡ AIForge</div>
+        <a href="{{ url_for('dashboard') }}" class="nav-back">← لوحة التحكم</a>
+    </nav>
+    <div class="container">
+        <h2>اختر خطتك</h2>
+        <div class="plans-grid">
+            {% for plan_id, plan in plans.items() %}
+            <div class="plan-card">
+                <h3>{{ plan_id | capitalize }}</h3>
+                <div class="price">${{ plan.amount }}<span>/شهر</span></div>
+                <form method="POST" action="{{ url_for('payments.create_payment') }}">
+                    <input type="hidden" name="plan" value="{{ plan_id }}">
+                    <div class="form-group">
+                        <label>طريقة الدفع</label>
+                        <select name="method">
+                            <option value="stripe">💳 بطاقة ائتمان (Stripe)</option>
+                            <option value="paypal">🅿️ PayPal</option>
+                            <option value="paddle">🏓 Paddle</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">اشترك الآن</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

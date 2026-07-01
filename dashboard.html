@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - AIForge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">⚡ AIForge</div>
+        <div class="nav-links">
+            <a href="{{ url_for('training.projects') }}">مشاريعي</a>
+            <a href="{{ url_for('payments.payment_page') }}">الاشتراك</a>
+            {% if current_user.is_admin %}<a href="{{ url_for('admin.admin_dashboard') }}">الإدارة</a>{% endif %}
+            <a href="{{ url_for('auth.logout') }}">خروج</a>
+        </div>
+    </nav>
+    <div class="dashboard">
+        <h1>مرحباً، {{ current_user.username }} 👋</h1>
+        <div class="stats-grid">
+            <div class="stat-card">📦 الخطة: {{ current_user.subscription_plan }}</div>
+            <a href="{{ url_for('training.training_page') }}" class="stat-card action">➕ مشروع جديد</a>
+            <a href="{{ url_for('github.connect_github') }}" class="stat-card action">🐙 ربط GitHub</a>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

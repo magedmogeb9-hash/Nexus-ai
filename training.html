@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التدريب - AIForge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">⚡ AIForge</div>
+        <a href="{{ url_for('dashboard') }}" class="nav-back">← لوحة التحكم</a>
+    </nav>
+    <div class="container">
+        <h2>إنشاء مشروع تدريب جديد</h2>
+        <form method="POST" action="{{ url_for('training.create_project') }}">
+            <div class="form-group">
+                <label>اسم المشروع</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="form-group">
+                <label>الوصف</label>
+                <textarea name="description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>نوع النموذج</label>
+                <select name="model_type" id="model_type" onchange="updateModels()">
+                    {% for mtype in models.keys() %}
+                    <option value="{{ mtype }}">{{ mtype }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>النموذج الأساسي</label>
+                <select name="base_model" id="base_model">
+                    {% for model in models['LLM'] %}
+                    <option value="{{ model }}">{{ model }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>طريقة التدريب</label>
+                <select name="training_method">
+                    {% for method in methods %}
+                    <option value="{{ method }}">{{ method }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">إنشاء المشروع</button>
+        </form>
+    </div>
+    <script>
+    const modelsData = {{ models | tojson }};
+    function updateModels() {
+        const type = document.getElementById('model_type').value;
+        const select = document.getElementById('base_model');
+        select.innerHTML = '';
+        (modelsData[type] || []).forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m; opt.text = m;
+            select.appendChild(opt);
+        });
+    }
+    </script>
+</body>
+</html>
